@@ -428,7 +428,7 @@ const HTML_PAGE = `
     <script>
 	const currentUrlParams = new URLSearchParams(window.location.search);
         const userToken = currentUrlParams.get('token');
-        const tokenQuery = userToken ? `&token=${userToken}` : '';
+        const tokenQuery = userToken ? '&token=' + userToken : '';
         
         function escapeHTML(str) {
             if (!str) return '';
@@ -498,7 +498,7 @@ const HTML_PAGE = `
                 showRefreshProgress();
             }
             try {
-                const url = showAll ? `${WORKER_URL}?all=true&optimized=true${tokenQuery}` : `${WORKER_URL}?accountIndex=0${tokenQuery}`;
+                const url = showAll ? `\${WORKER_URL}?all=true&optimized=true\${tokenQuery}` : `\${WORKER_URL}?accountIndex=0\${tokenQuery}`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
@@ -539,7 +539,7 @@ const HTML_PAGE = `
             showLoading();
             hideError();
             try {
-                const response = await fetch(`${WORKER_URL}?accountIndex=${accountIndex}${tokenQuery}`);
+                const response = await fetch(`\${WORKER_URL}?accountIndex=\${accountIndex}\${tokenQuery}`);
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
                 }
@@ -620,7 +620,7 @@ const HTML_PAGE = `
             return \`
                 <div class="card">
                     <div class="account-header">
-                        <div class="account-name">${escapeHTML(account.accountName)}</div>
+                        <div class="account-name">\${escapeHTML(account.accountName)}</div>
                         <div class="account-status \${statusClass}">\${statusText}</div>
                     </div>
                     <div class="metric-grid">
