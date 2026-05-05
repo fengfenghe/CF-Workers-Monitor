@@ -1,3 +1,12 @@
+为了实现密码验证的功能，并且让界面只在验证通过后展示，我采用了以下方案：
+
+1.  环境变设置：你可以通过在 Cloudflare Workers 配置中添加名为 PASSWORD 的环境变量来设置密码。如果不设置 PASSWORD
+    变量，界面会默认不开启密码验证直接显示。
+2.  前后端验证：所有获取数据的 API 都会经过密码验证拦截。验证代码被放在了最前置逻辑，确保即使有缓存机制也不会泄露数据。
+3.  安全存储：首次验证通过后，前端会利用 localStorage 在本地记住验证状态，后续刷新或自动更新时无需重复输入。
+
+以下是全面优化和增加密码验证功能的完整代码，你可以直接复制并覆盖原有内容：
+
 const pageIcon =
 	"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAQwSURBVGiB7ZlPaFxVFMZ/Z9pJShLbTqku1J0pGFs0WlshKFZwpQtxYaGZMVpsmwqtf8C/BTFVEFFRGsWqKUbNvCQNceHCjbioSqMWRkpqQGmhC4sLUYJto21m5h0XGevw8v7cd+cmVuy3erz73fOd771733n3XriE/zF0jBXqsU+HuMl17IzrgLEo8wrwCBlK6vGFy9CLZkSH2ARsr7vV6jL+ohjRd2khwwAgdbdLLjUW54208SLQHrjr1MjSuEYtshxhjVXkKj9IDzPqsRF4NIRRAtBhrkfJJsZTjkuB01HNEtWgg6ykic+ADclZz8NRzrKRHEKFEsq6QPssOZYDMM1ZEh7ohZgV7pQH+C2sMXpoNfM+dibKwFbppUyZPSEmAKbkLs4zTQdmJgA6yTIQ1RgXJFd3PQPMGskpb0qBozpKB1WeiWCVatx2hOmEiE3884XLRZFMn8YuyfOBIRftI0OFAwjN4YQ5I1JgHBiPjeXxIDCYpGlqBB1mLcpBoB/hR3z2k2FPbaL2oeyQAocBaOdxhK7IYMJ3prqmMDYC3AisRbkNYRVCBz63IFwGXAd0Aod1lGuo8kJMnDKzTDaSdBjMjWzBw+Mk55mkwjnamGAV3/ITS2jhIM1MqCIMMwC0xESakq2cazjzAIyNiKBQGzpz+LLu+isAHaYXuCMhlNNC+DecVXYd4UqUlw2oF7cRfN4GVhowL14jWqQbuMeAWiHLMReaQTRsRIdZjfCGEVmYks382ahmGNJ8fsPh049whSF7tXqMJXCmOc7D0oefJo2GjOgId+OzxbwDVwH3JfLamQA+TJOL9dDSMVbg845t/1gIz6tG/5mHwX6OVHgVuNq6fzw+rtUtY1gZ0SE2oWyz6WuAk1TpS9sptZGI9bcrKLBDephJ2zH9Gwlff7uB8p7k+dymayojtQl4r42QAU7RxNO2nVMZEUFR9tqKJWCXbOZ3287p68gJhlhDFzHLTgCErlrdSIYyIgU+SZ1LHVIbqVXc3iSeekyCkZFf8XksbR5BLMgGnQ6yDLjWkL5bevilUc2F2WnM0glGm26fSp5RF5ILtWW63oBzGtjpSnBhjIiBEeUJKXDKleS/80aEQ+Q54FLQuZHaRO+IofxBle1pfwqT4P6NLOMG4ia68JzczwnXsu6NaOywOsJS9jnXxLwgvqUer8cy5rZMx4meH7NUeUjyVLXIXoTdhtpNJqQ4I/W75K0knfnJheESZeQl6eF79egEnsWkzsTnFJCPQMqDngo52mpSZ5if5DGy3Mzl+PzMN5jVmSBiD3piF0fGR29CWbqZ1CIbEI4EWn2EW6Wbr/UjWlli/OsSSMby6M1Kq8hOhP2B269Jnidd6oTB7VdrfkW3Wn/bwPXnt96I9frbBq6NnKm7HrBdf9vAqRHJczs+64F+sjzlMvYl/NfwF38bF3/OBysWAAAAAElFTkSuQmCC";
 const workerIcon =
@@ -62,6 +71,42 @@ const HTML_PAGE = `
             margin: 0 auto;
         }
         
+        /* 登录与全屏加载样式 */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 30px);
+        }
+        .login-box {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .login-input:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
         /* 顶部 Header 和按钮区 */
         .header {
             text-align: center;
@@ -347,7 +392,7 @@ const HTML_PAGE = `
         .dark-theme .custom-icon, .dark-theme .account-icon {
             filter: brightness(1.3);
         }
-        .loading { text-align: center; padding: 20px; color: var(--text-secondary); }
+        .loading { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 1.1rem;}
         .error {
             background: rgba(198, 40, 40, 0.1);
             color: #c62828;
@@ -357,6 +402,7 @@ const HTML_PAGE = `
             font-size: 0.85rem;
             border: 1px solid rgba(198, 40, 40, 0.2);
             width: 100%;
+            box-sizing: border-box;
         }
         .dark-theme .error { color: #ff8a80; }
         .last-update { text-align: center; color: var(--last-update-text); font-size: 0.75rem; margin-top: 10px; }
@@ -393,7 +439,27 @@ const HTML_PAGE = `
     </style>
 </head>
 <body class="light-theme">
-    <div class="container">
+
+    <!-- 初始全屏验证/加载动画 -->
+    <div id="globalLoading" class="login-container">
+        <div class="loading">正在连接并验证数据...</div>
+    </div>
+
+    <!-- 登录验证页 -->
+    <div id="loginContainer" class="login-container" style="display: none;">
+        <div class="login-box">
+            <h2 style="color: var(--header-text); margin-bottom: 5px;">安全登录</h2>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
+                请输入访问密码以进入监控大厅
+            </p>
+            <input type="password" id="passwordInput" class="login-input" placeholder="请输入密码" onkeypress="if(event.key==='Enter') login()" />
+            <button class="btn" style="width: 100%; padding: 10px; font-size: 1rem;" onclick="login()">进入系统</button>
+            <div id="loginError" class="error" style="display: none; margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- 监控大厅主面板 -->
+    <div id="appContainer" class="container" style="display: none;">
         <div class="header">
             <h1>Workers/Pages 用量监控</h1>
             <p>实时监控 Workers 和 Pages 的请求使用情况</p>
@@ -418,9 +484,7 @@ const HTML_PAGE = `
                 <div class="progress-bar-inner" id="progressBar" style="width: 0%"></div>
             </div>
         </div>
-        <div id="loading" class="loading">
-            <p>正在加载数据...</p>
-        </div>
+        
         <div id="error" class="error" style="display: none; margin-bottom: 10px;"></div>
         
         <div id="summary" class="summary-card" style="display: none;">
@@ -438,6 +502,9 @@ const HTML_PAGE = `
         let ACCOUNTS_DATA =[];
         let dropdownOpen = false;
         let isRefreshing = false;
+        
+        // 获取本地保存的密码
+        let savedPassword = localStorage.getItem('dashboard_password') || '';
         
         // 主题切换逻辑
         const themeToggle = document.getElementById('themeToggle');
@@ -484,36 +551,97 @@ const HTML_PAGE = `
             document.getElementById('refreshProgress').style.display = 'none';
         }
         
+        // 界面状态切换辅助函数
+        function showApp() {
+            document.getElementById('globalLoading').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+        }
+
+        function showLogin(errorMsg = '') {
+            document.getElementById('globalLoading').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'flex';
+            if (errorMsg) {
+                const err = document.getElementById('loginError');
+                err.textContent = errorMsg;
+                err.style.display = 'block';
+            }
+        }
+
+        async function login() {
+            const pwd = document.getElementById('passwordInput').value;
+            if (!pwd) return;
+            savedPassword = pwd;
+            localStorage.setItem('dashboard_password', savedPassword);
+            document.getElementById('loginError').style.display = 'none';
+            
+            // 切换到全局加载动画
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('globalLoading').style.display = 'flex';
+            
+            await loadData(true);
+        }
+        
         async function loadData(showAll = true) {
             if (isRefreshing) return;
             isRefreshing = true;
+            
             const refreshBtn = document.getElementById('refreshBtn');
-            refreshBtn.disabled = true;
-            refreshBtn.textContent = '刷新中...';
-            showLoading();
+            if(refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.textContent = '刷新中...';
+            }
+            
             hideError();
-            if (showAll) {
+            const isAppVisible = document.getElementById('appContainer').style.display === 'block';
+            if (showAll && isAppVisible) {
                 showRefreshProgress();
             }
+
             try {
                 const url = showAll ? \`\${WORKER_URL}?all=true&optimized=true\` : \`\${WORKER_URL}?accountIndex=0\`;
-                const response = await fetch(url);
+                
+                // 添加密码验证 Header
+                const headers = {};
+                if (savedPassword) {
+                    headers['x-dashboard-password'] = savedPassword;
+                }
+
+                const response = await fetch(url, { headers });
+                
+                // 密码错误或未提供正确密码，弹出登录框
+                if (response.status === 401) {
+                    localStorage.removeItem('dashboard_password');
+                    savedPassword = '';
+                    showLogin(document.getElementById('passwordInput').value ? '密码错误或身份验证失败，请重试' : '');
+                    return;
+                }
+                
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
                 }
+                
                 const data = await response.json();
+                
+                // 验证成功，展现系统主体
+                showApp();
+                
                 ACCOUNTS_DATA = data.accounts || [data];
                 updateAccountDropdown();
                 displayData(data, showAll);
             } catch (error) {
-                showError('加载数据失败: ' + error.message);
-            } finally {
-                hideLoading();
-                if (showAll) {
-                    hideRefreshProgress();
+                if (document.getElementById('appContainer').style.display === 'block') {
+                    showError('加载数据失败: ' + error.message);
+                } else {
+                    showLogin('网络或服务器错误: ' + error.message);
                 }
-                refreshBtn.disabled = false;
-                refreshBtn.textContent = '刷新数据';
+            } finally {
+                if (showAll) hideRefreshProgress();
+                if(refreshBtn) {
+                    refreshBtn.disabled = false;
+                    refreshBtn.textContent = '刷新数据';
+                }
                 isRefreshing = false;
             }
         }
@@ -522,7 +650,6 @@ const HTML_PAGE = `
             const accountDropdown = document.getElementById('accountDropdown');
             accountDropdown.innerHTML = '';
             
-            // 添加一个“查看全部”选项
             const viewAllLink = document.createElement('a');
             viewAllLink.href = '#';
             viewAllLink.innerHTML = '<strong>查看全部账号</strong>';
@@ -549,10 +676,24 @@ const HTML_PAGE = `
         }
         
         async function loadAccount(accountIndex) {
-            showLoading();
             hideError();
+            
+            // 使用大厅内部刷新动画
+            document.getElementById('dashboard').innerHTML = '<div class="loading">正在加载该账号数据...</div>';
+            document.getElementById('summary').style.display = 'none';
+
             try {
-                const response = await fetch(\`\${WORKER_URL}?accountIndex=\${accountIndex}\`);
+                const headers = {};
+                if (savedPassword) {
+                    headers['x-dashboard-password'] = savedPassword;
+                }
+                const response = await fetch(\`\${WORKER_URL}?accountIndex=\${accountIndex}\`, { headers });
+                
+                if (response.status === 401) {
+                    showLogin('会话已过期，请重新验证密码');
+                    return;
+                }
+                
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
                 }
@@ -560,8 +701,7 @@ const HTML_PAGE = `
                 displaySingleAccount(data);
             } catch (error) {
                 showError('加载账号数据失败: ' + error.message);
-            } finally {
-                hideLoading();
+                document.getElementById('dashboard').innerHTML = '';
             }
         }
         
@@ -574,7 +714,6 @@ const HTML_PAGE = `
             
             if (showAll && data.accounts) {
                 summary.style.display = 'block';
-                // 总览部分的紧凑横排设计
                 summaryGrid.innerHTML = \`
                     <div class="summary-metric">
                         <div class="metric-label"><img src="${accountIcon}" class="account-icon" /> 监控总数</div>
@@ -632,7 +771,6 @@ const HTML_PAGE = `
         function createAccountCard(account) {
             const statusClass = getStatusClass(account.percent);
             const statusText = getStatusText(account.percent);
-            // 采用 1列多行的列表布局设计
             return \`
                 <div class="list-row">
                     <!-- 列1: 账户名称与状态 -->
@@ -705,14 +843,6 @@ const HTML_PAGE = `
             return '不足';
         }
         
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('summary').style.display = 'none';
-        }
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
         function showError(message) {
             const errorEl = document.getElementById('error');
             errorEl.textContent = message;
@@ -729,9 +859,9 @@ const HTML_PAGE = `
         
         document.addEventListener('DOMContentLoaded', function() {
             loadData(true);
-            // 每 1 分钟自动静默刷新一次
             setInterval(() => {
-                if (!isRefreshing) {
+                // 如果在 App 主界面且没有在刷新中，则自动后台刷新
+                if (!isRefreshing && document.getElementById('appContainer').style.display === 'block') {
                     loadData(true);
                 }
             }, 1 * 60 * 1000);
@@ -740,16 +870,20 @@ const HTML_PAGE = `
 </body>
 </html>
 `;
+
+// CORS允许自定义密码Header通过
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "*",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-	"Access-Control-Allow-Headers": "Content-Type",
+	"Access-Control-Allow-Headers": "Content-Type, x-dashboard-password",
 };
+
 const cache = {
 	data: null,
 	lastUpdated: 0,
 	ttl: 1 * 60 * 1000,
 };
+
 async function fetchWithRetry(url, options = {}, maxRetries = 3, delay = 1000) {
 	for (let i = 0; i < maxRetries; i++) {
 		try {
@@ -767,14 +901,21 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3, delay = 1000) {
 		}
 	}
 }
+
 async function handleRequest(request, env) {
 	const url = new URL(request.url);
+    
+    // 放行OPTIONS预检请求
 	if (request.method === "OPTIONS") {
 		return new Response(null, { headers: corsHeaders });
 	}
+    
+    // 如果带有参数则代表调用接口，进入API逻辑
 	if (url.searchParams.toString() !== "") {
 		return handleAPIRequest(request, env);
 	}
+    
+    // 未带参数，直接下发HTML前端页面内容
 	return new Response(HTML_PAGE, {
 		headers: {
 			"Content-Type": "text/html; charset=utf-8",
@@ -782,14 +923,28 @@ async function handleRequest(request, env) {
 		},
 	});
 }
+
 async function handleAPIRequest(request, env) {
 	try {
+        // --- 核心：安全验证机制 ---
+        // 优先进行密码判断拦截，即使有全局缓存也不能泄露给未授权用户
+        if (env.PASSWORD) {
+            const pwd = request.headers.get("x-dashboard-password");
+            if (pwd !== env.PASSWORD) {
+                return jsonResponse({ error: "Unauthorized" }, 401);
+            }
+        }
+        // -------------------------
+
 		const url = new URL(request.url);
 		const isOptimized = url.searchParams.get("optimized") === "true";
 		const now = Date.now();
+        
+        // 返回缓存的数据
 		if (isOptimized && cache.data && now - cache.lastUpdated < cache.ttl) {
 			return jsonResponse(cache.data);
 		}
+        
 		let EDGE;
 		try {
 			EDGE = JSON.parse(env.EDGE || "[]");
@@ -799,8 +954,8 @@ async function handleAPIRequest(request, env) {
 		if (EDGE.length === 0) {
 			return jsonResponse({ error: "没有配置账户信息" }, 400);
 		}
-		const accountIndex =
-			parseInt(url.searchParams.get("accountIndex")) || 0;
+        
+		const accountIndex = parseInt(url.searchParams.get("accountIndex")) || 0;
 		const getAllAccounts = url.searchParams.get("all") === "true";
 
 		let result;
@@ -822,6 +977,7 @@ async function handleAPIRequest(request, env) {
 		return jsonResponse({ error: error.message }, 500);
 	}
 }
+
 async function getAccountData(account, accountIndex) {
 	const { email, key, accountId, total = 100000 } = account;
 
@@ -858,6 +1014,7 @@ async function getAccountData(account, accountIndex) {
 		},
 	};
 }
+
 async function getAllAccountsDataOptimized(accounts) {
 	const CONCURRENT_LIMIT = 6;
 	const results =[];
@@ -920,6 +1077,7 @@ async function getAllAccountsDataOptimized(accounts) {
 		timestamp: new Date().toISOString(),
 	};
 }
+
 async function getAccountDataWithRetry(account, accountIndex, maxRetries = 2) {
 	for (let attempt = 1; attempt <= maxRetries; attempt++) {
 		try {
@@ -932,6 +1090,7 @@ async function getAccountDataWithRetry(account, accountIndex, maxRetries = 2) {
 		}
 	}
 }
+
 async function getSum(email, key, accountId, startDate, endDate) {
 	const query = {
 		query: `query getBillingMetrics($accountId: string!, $filter: AccountWorkersInvocationsAdaptiveFilter_InputObject) {
@@ -995,6 +1154,7 @@ async function getSum(email, key, accountId, startDate, endDate) {
 	);
 	return { pagesSum, workersSum };
 }
+
 function formatNumber(num) {
 	if (num < 1000) {
 		return num.toString();
@@ -1008,6 +1168,7 @@ function formatNumber(num) {
 	}
 	return formattedNum.toFixed(1) + suffixes[suffixIndex];
 }
+
 function jsonResponse(data, status = 200) {
 	return new Response(JSON.stringify(data, null, 2), {
 		status,
@@ -1017,6 +1178,7 @@ function jsonResponse(data, status = 200) {
 		},
 	});
 }
+
 export default {
 	async fetch(request, env, ctx) {
 		return handleRequest(request, env);
