@@ -18,7 +18,7 @@ const HTML_PAGE = `
             --text-primary: #333;
             --text-secondary: #666;
             --card-bg: rgba(255, 255, 255, 0.9);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             --border: 1px solid rgba(0, 0, 0, 0.1);
             --btn-text: #333;
             --btn-bg: rgba(255, 255, 255, 0.8);
@@ -32,7 +32,7 @@ const HTML_PAGE = `
             --text-primary: #fff;
             --text-secondary: #ccc;
             --card-bg: rgba(30, 30, 30, 0.9);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             --border: 1px solid rgba(255, 255, 255, 0.1);
             --btn-text: #fff;
             --btn-bg: rgba(255, 255, 255, 0.1);
@@ -49,7 +49,8 @@ const HTML_PAGE = `
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f9fcff;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+            font-size: 14px;
             transition: background 0.3s ease, color 0.3s ease;
             color: var(--text-primary);
         }
@@ -68,36 +69,36 @@ const HTML_PAGE = `
             z-index: -1;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             color: var(--header-text);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
         .header p {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             opacity: 0.9;
         }
         .controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
             align-items: center;
         }
         .btn {
-            padding: 12px 24px;
+            padding: 6px 16px;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -128,7 +129,7 @@ const HTML_PAGE = `
             left: 0;
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            min-width: 200px;
+            min-width: 160px;
             box-shadow: var(--shadow);
             z-index: 1000;
             border-radius: 8px;
@@ -141,10 +142,11 @@ const HTML_PAGE = `
         }
         .dropdown-content a {
             color: var(--text-primary);
-            padding: 12px 16px;
+            padding: 8px 12px;
             text-decoration: none;
             display: block;
             border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
             transition: background 0.3s ease;
         }
         .dropdown-content a:hover {
@@ -152,41 +154,45 @@ const HTML_PAGE = `
         }
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
         }
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 10px;
+            padding: 12px;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease;
             border: var(--border);
             color: var(--text-primary);
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         .account-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--border);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
         }
         .account-name {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .account-status {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: bold;
+            white-space: nowrap;
         }
         .status-good {
             background: rgba(46, 125, 50, 0.2);
@@ -203,46 +209,47 @@ const HTML_PAGE = `
         .metric-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .metric {
             text-align: center;
-            padding: 15px;
+            padding: 8px;
             background: var(--bg-primary);
-            border-radius: 10px;
+            border-radius: 6px;
             border: var(--border);
         }
         .metric-label {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .metric-value {
-            font-size: 1.8rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--text-primary);
         }
         .progress-section {
-            margin-top: 20px;
+            margin-top: 8px;
         }
         .progress-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
         }
         .progress-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
         }
         .progress-percent {
+            font-size: 0.8rem;
             font-weight: bold;
             color: var(--text-primary);
         }
         .progress-bar {
-            height: 12px;
+            height: 6px;
             background: var(--bg-primary);
-            border-radius: 6px;
+            border-radius: 3px;
             overflow: hidden;
         }
         .progress-fill {
@@ -253,57 +260,63 @@ const HTML_PAGE = `
         .summary-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 10px;
+            padding: 15px;
             box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: var(--border);
             color: var(--text-primary);
+        }
+        .summary-card h2 {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 5px;
         }
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
         }
         .summary-metric {
             text-align: center;
-            padding: 20px;
+            padding: 10px;
             background: var(--bg-primary);
-            border-radius: 10px;
+            border-radius: 8px;
             border: var(--border);
         }
         .summary-value {
-            font-size: 2rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--text-primary);
-            margin: 10px 0;
+            margin: 5px 0;
         }
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 20px;
             color: var(--text-secondary);
         }
         .error {
             background: rgba(198, 40, 40, 0.2);
             color: #c62828;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
             border: 1px solid rgba(198, 40, 40, 0.3);
         }
         .last-update {
             text-align: center;
             color: var(--last-update-text);
-            margin-top: 20px;
-            font-size: 0.9rem;
+            margin-top: 15px;
+            font-size: 0.8rem;
         }
         .theme-toggle {
             position: relative;
-            width: 60px;
-            height: 30px;
+            width: 44px;
+            height: 22px;
             background: var(--btn-bg);
-            border-radius: 15px;
+            border-radius: 11px;
             border: var(--border);
             cursor: pointer;
             transition: background 0.3s ease;
@@ -312,37 +325,26 @@ const HTML_PAGE = `
         .theme-toggle::before {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
             background: var(--btn-text);
             border-radius: 50%;
             transition: transform 0.3s ease;
         }
         .dark-theme .theme-toggle::before {
-            transform: translateX(30px);
+            transform: translateX(22px);
         }
-        .custom-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
+        .custom-icon, .account-icon {
+            width: 12px;
+            height: 12px;
+            margin-right: 4px;
             vertical-align: middle;
             filter: brightness(0.8);
             object-fit: contain;
         }
-        .dark-theme .custom-icon {
-            filter: brightness(1.2);
-        }
-        .account-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-            vertical-align: middle;
-            filter: brightness(0.8);
-            object-fit: contain;
-        }
-        .dark-theme .account-icon {
+        .dark-theme .custom-icon, .dark-theme .account-icon {
             filter: brightness(1.2);
         }
         .refresh-progress {
@@ -352,7 +354,7 @@ const HTML_PAGE = `
         }
         .progress-text {
             margin-bottom: 5px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .progress-bar-container {
             width: 100%;
@@ -366,23 +368,12 @@ const HTML_PAGE = `
             background: linear-gradient(90deg, #4caf50, #8bc34a);
             transition: width 0.3s ease;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
         @media (max-width: 768px) {
             .dashboard {
                 grid-template-columns: 1fr;
             }
             .metric-grid {
                 grid-template-columns: 1fr;
-            }
-            .header h1 {
-                font-size: 2rem;
-            }
-            .controls {
-                flex-direction: column;
-                align-items: center;
             }
         }
     </style>
@@ -427,7 +418,7 @@ const HTML_PAGE = `
     </div>
     <script>
         const WORKER_URL = window.location.origin;
-        let ACCOUNTS_DATA = [];
+        let ACCOUNTS_DATA =[];
         let dropdownOpen = false;
         let isRefreshing = false;
         const themeToggle = document.getElementById('themeToggle');
@@ -568,7 +559,7 @@ const HTML_PAGE = `
                     <div class="summary-metric">
                         <div class="metric-label">总剩余额度</div>
                         <div class="summary-value">\${data.totals.formatted.remaining}</div>
-                        <div class="progress-percent">\${data.totals.percent}%</div>
+                        <div class="progress-percent" style="font-size: 0.9rem;">\${data.totals.percent}%</div>
                     </div>
                 \`;
                 data.accounts.forEach(account => {
@@ -604,7 +595,7 @@ const HTML_PAGE = `
             return \`
                 <div class="card">
                     <div class="account-header">
-                        <div class="account-name">\${account.accountName}</div>
+                        <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
                         <div class="account-status \${statusClass}">\${statusText}</div>
                     </div>
                     <div class="metric-grid">
@@ -614,7 +605,7 @@ const HTML_PAGE = `
                                 Pages 请求
                             </div>
                             <div class="metric-value">\${account.formatted.pagesSum}</div>
-                            <div class="metric-label">\${account.pagesSum.toLocaleString()} 次</div>
+                            <div class="metric-label" style="margin-bottom:0">\${account.pagesSum.toLocaleString()} 次</div>
                         </div>
                         <div class="metric">
                             <div class="metric-label">
@@ -622,7 +613,7 @@ const HTML_PAGE = `
                                 Workers 请求
                             </div>
                             <div class="metric-value">\${account.formatted.workersSum}</div>
-                            <div class="metric-label">\${account.workersSum.toLocaleString()} 次</div>
+                            <div class="metric-label" style="margin-bottom:0">\${account.workersSum.toLocaleString()} 次</div>
                         </div>
                     </div>
                     <div class="progress-section">
@@ -633,11 +624,11 @@ const HTML_PAGE = `
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: \${account.percent}%"></div>
                         </div>
-                        <div style="text-align: center; margin-top: 8px; color: var(--text-secondary); font-size: 0.9rem;">
+                        <div style="text-align: center; margin-top: 4px; color: var(--text-secondary); font-size: 0.75rem;">
                             \${account.formatted.remaining} / \${account.formatted.total}
                         </div>
                     </div>
-                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0, 0, 0, 0.1); text-align: center; color: var(--text-secondary); font-size: 0.8rem;">
+                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0, 0, 0, 0.1); text-align: center; color: var(--text-secondary); font-size: 0.7rem;">
                         最后更新: \${account.date}
                     </div>
                 </div>
@@ -647,10 +638,10 @@ const HTML_PAGE = `
             return \`
                 <div class="card">
                     <div class="account-header">
-                        <div class="account-name">\${account.accountName}</div>
+                        <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
                         <div class="account-status status-danger">错误</div>
                     </div>
-                    <div class="error" style="margin: 0;">
+                    <div class="error">
                         \${account.error}
                     </div>
                 </div>
@@ -819,7 +810,7 @@ async function getAccountData(account, accountIndex) {
 }
 async function getAllAccountsDataOptimized(accounts) {
 	const CONCURRENT_LIMIT = 6;
-	const results = [];
+	const results =[];
 	const accountPromises = accounts.map((account, index) =>
 		getAccountDataWithRetry(account, index)
 	);
@@ -943,7 +934,7 @@ async function getSum(email, key, accountId, startDate, endDate) {
 	const accountData = accounts[0];
 	const pagesGroups =
 		accountData.pagesFunctionsInvocationsAdaptiveGroups || [];
-	const workersData = accountData.workersInvocationsAdaptive || [];
+	const workersData = accountData.workersInvocationsAdaptive ||[];
 	const pagesSum = pagesGroups.reduce(
 		(sum, group) => sum + (group?.sum?.requests || 0),
 		0
@@ -958,7 +949,7 @@ function formatNumber(num) {
 	if (num < 1000) {
 		return num.toString();
 	}
-	const suffixes = ["", "k", "m", "b", "t"];
+	const suffixes =["", "k", "m", "b", "t"];
 	let suffixIndex = 0;
 	let formattedNum = num;
 	while (formattedNum >= 1000 && suffixIndex < suffixes.length - 1) {
