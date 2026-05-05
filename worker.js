@@ -426,6 +426,22 @@ const HTML_PAGE = `
         <div class="last-update" id="lastUpdate"></div>
     </div>
     <script>
+	const currentUrlParams = new URLSearchParams(window.location.search);
+        const userToken = currentUrlParams.get('token');
+        const tokenQuery = userToken ? `&token=${userToken}` : '';
+        
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.toString().replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
         const WORKER_URL = window.location.origin;
         let ACCOUNTS_DATA = [];
         let dropdownOpen = false;
@@ -482,7 +498,7 @@ const HTML_PAGE = `
                 showRefreshProgress();
             }
             try {
-                const url = showAll ? \`\${WORKER_URL}?all=true&optimized=true\` : \`\${WORKER_URL}?accountIndex=0\`;
+                const url = showAll ? `${WORKER_URL}?all=true&optimized=true${tokenQuery}` : `${WORKER_URL}?accountIndex=0${tokenQuery}`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
@@ -523,7 +539,7 @@ const HTML_PAGE = `
             showLoading();
             hideError();
             try {
-                const response = await fetch(\`\${WORKER_URL}?accountIndex=\${accountIndex}\`);
+                const response = await fetch(`${WORKER_URL}?accountIndex=${accountIndex}${tokenQuery}`);
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
                 }
@@ -604,7 +620,7 @@ const HTML_PAGE = `
             return \`
                 <div class="card">
                     <div class="account-header">
-                        <div class="account-name">\${account.accountName}</div>
+                        <div class="account-name">${escapeHTML(account.accountName)}</div>
                         <div class="account-status \${statusClass}">\${statusText}</div>
                     </div>
                     <div class="metric-grid">
@@ -651,7 +667,7 @@ const HTML_PAGE = `
                         <div class="account-status status-danger">错误</div>
                     </div>
                     <div class="error" style="margin: 0;">
-                        \${account.error}
+                        \${escapeHTML(account.error)}
                     </div>
                 </div>
             \`;
@@ -701,7 +717,7 @@ const HTML_PAGE = `
 `;
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "*",
-	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+	"Access-Control-Allow-Methods": "GET, OPTIONS",
 	"Access-Control-Allow-Headers": "Content-Type",
 };
 const cache = {
@@ -727,19 +743,35 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3, delay = 1000) {
 	}
 }
 async function handleRequest(request, env) {
-	const url = new URL(request.url);
-	if (request.method === "OPTIONS") {
-		return new Response(null, { headers: corsHeaders });
-	}
-	if (url.searchParams.toString() !== "") {
-		return handleAPIRequest(request, env);
-	}
-	return new Response(HTML_PAGE, {
-		headers: {
-			"Content-Type": "text/html; charset=utf-8",
-			...corsHeaders,
-		},
-	});
+    const url = new URL(request.url);
+
+    // 【新增】获取 URL 中的 token
+    const token = url.searchParams.get("token");
+    
+    // 【新增】验证鉴权
+    if (env.AUTH_TOKEN && token !== env.AUTH_TOKEN) {
+        return new Response("Unauthorized (无权访问，请在 URL 中加上 ?token=您的密码)", { 
+            status: 401,
+            headers: { "Content-Type": "text/plain; charset=utf-8" }
+        });
+    }
+
+    if (request.method === "OPTIONS") {
+        return new Response(null, { headers: corsHeaders });
+    }
+    
+    // 验证通过后，移除 token 参数
+    url.searchParams.delete("token");
+
+    if (url.searchParams.toString() !== "") {
+        return handleAPIRequest(request, env);
+    }
+    return new Response(HTML_PAGE, {
+        headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            ...corsHeaders,
+        },
+    });
 }
 async function handleAPIRequest(request, env) {
 	try {
