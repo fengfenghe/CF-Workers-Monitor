@@ -728,6 +728,37 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3, delay = 1000) {
 }
 async function handleRequest(request, env) {
 	const url = new URL(request.url);
+	
+	// ========== HTTP Basic 认证 ==========
+	// 健康检查端点可以跳过认证（可选）
+	const skipAuth = url.pathname === "/_health";
+	
+	if (!skipAuth) {
+		// 从环境变量读取密码
+		const expectedPassword = env.ACCESS_PASSWORD;
+		if (!expectedPassword) {
+			return new Response("请先设置环境变量 ACCESS_PASSWORD", { 
+				status: 500,
+				headers: { "Content-Type": "text/plain; charset=utf-8" }
+			});
+		}
+		
+		const expectedUser = "admin";
+		const expectedAuth = "Basic " + btoa(`${expectedUser}:${expectedPassword}`);
+		const auth = request.headers.get("Authorization");
+		
+		if (!auth || auth !== expectedAuth) {
+			return new Response("Unauthorized - Please provide valid credentials", {
+				status: 401,
+				headers: {
+					"WWW-Authenticate": 'Basic realm="Cloudflare Usage Dashboard"',
+					"Content-Type": "text/plain; charset=utf-8",
+				},
+			});
+		}
+	}
+	// ====================================
+	
 	if (request.method === "OPTIONS") {
 		return new Response(null, { headers: corsHeaders });
 	}
