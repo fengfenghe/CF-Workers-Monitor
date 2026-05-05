@@ -18,11 +18,11 @@ const HTML_PAGE = `
             --text-primary: #333;
             --text-secondary: #666;
             --card-bg: rgba(255, 255, 255, 0.9);
-            --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             --border: 1px solid rgba(0, 0, 0, 0.1);
             --btn-text: #333;
             --btn-bg: rgba(255, 255, 255, 0.8);
-            --btn-hover-bg: rgba(255, 255, 255, 0.9);
+            --btn-hover-bg: rgba(255, 255, 255, 1);
             --header-text: #333;
             --last-update-text: #666;
         }
@@ -30,15 +30,15 @@ const HTML_PAGE = `
             --bg-primary: rgba(0, 0, 0, 0.2);
             --bg-secondary: rgba(0, 0, 0, 0.3);
             --text-primary: #fff;
-            --text-secondary: #ccc;
+            --text-secondary: #aaa;
             --card-bg: rgba(30, 30, 30, 0.9);
-            --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             --border: 1px solid rgba(255, 255, 255, 0.1);
             --btn-text: #fff;
             --btn-bg: rgba(255, 255, 255, 0.1);
             --btn-hover-bg: rgba(255, 255, 255, 0.2);
             --header-text: #fff;
-            --last-update-text: #ccc;
+            --last-update-text: #888;
         }
         * {
             margin: 0;
@@ -47,71 +47,58 @@ const HTML_PAGE = `
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f9fcff;
+            background: #f4f7fa;
             min-height: 100vh;
-            padding: 10px;
+            padding: 15px 20px;
             font-size: 14px;
             transition: background 0.3s ease, color 0.3s ease;
             color: var(--text-primary);
         }
         body.dark-theme {
-            background: #000000;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: inherit;
-            filter: blur(10px);
-            z-index: -1;
+            background: #0d1117;
         }
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
+        
+        /* 顶部 Header 和按钮区 */
         .header {
             text-align: center;
             margin-bottom: 15px;
             color: var(--header-text);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
         }
         .header p {
-            font-size: 0.9rem;
-            opacity: 0.9;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
         }
         .controls {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 15px;
-            flex-wrap: wrap;
             align-items: center;
         }
         .btn {
             padding: 6px 16px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: bold;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             background: var(--btn-bg);
-            backdrop-filter: blur(10px);
             color: var(--btn-text);
             border: var(--border);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
         .btn:hover {
             background: var(--btn-hover-bg);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
         }
         .btn:disabled {
             opacity: 0.6;
@@ -128,13 +115,12 @@ const HTML_PAGE = `
             top: 100%;
             left: 0;
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
             min-width: 160px;
             box-shadow: var(--shadow);
             z-index: 1000;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
-            margin-top: 5px;
+            margin-top: 4px;
             border: var(--border);
         }
         .dropdown-content.show {
@@ -146,105 +132,111 @@ const HTML_PAGE = `
             text-decoration: none;
             display: block;
             border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-            transition: background 0.3s ease;
+            font-size: 0.85rem;
+            transition: background 0.2s ease;
         }
         .dropdown-content a:hover {
             background: var(--bg-secondary);
         }
+
+        /* 主仪表盘：一列多行布局 */
         .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .card {
+
+        .list-row {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 12px 20px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
             border: var(--border);
             color: var(--text-primary);
-        }
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        .account-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
+            justify-content: space-between;
+            gap: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .list-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 内部列定义 */
+        .row-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .col-name {
+            flex: 0 0 200px;
+            min-width: 0;
+        }
+        .account-name-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
         }
         .account-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .account-status {
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
             white-space: nowrap;
         }
-        .status-good {
-            background: rgba(46, 125, 50, 0.2);
-            color: #2e7d32;
-        }
-        .status-warning {
-            background: rgba(245, 124, 0, 0.2);
-            color: #f57c00;
-        }
-        .status-danger {
-            background: rgba(198, 40, 40, 0.2);
-            color: #c62828;
-        }
-        .metric-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .metric {
-            text-align: center;
-            padding: 8px;
-            background: var(--bg-primary);
-            border-radius: 6px;
-            border: var(--border);
-        }
-        .metric-label {
+        .col-update {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-bottom: 4px;
         }
-        .metric-value {
-            font-size: 1.1rem;
+
+        .col-stat {
+            flex: 0 0 150px;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        .stat-value {
+            font-size: 1.05rem;
             font-weight: bold;
-            color: var(--text-primary);
         }
-        .progress-section {
-            margin-top: 8px;
+        .stat-raw {
+            font-size: 0.75rem;
+            font-weight: normal;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .col-progress {
+            flex: 1;
+            min-width: 200px;
         }
         .progress-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4px;
-        }
-        .progress-label {
             font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .progress-text {
             color: var(--text-secondary);
         }
         .progress-percent {
-            font-size: 0.8rem;
             font-weight: bold;
-            color: var(--text-primary);
+            font-size: 0.85rem;
         }
         .progress-bar {
             height: 6px;
@@ -257,124 +249,146 @@ const HTML_PAGE = `
             background: linear-gradient(90deg, #4caf50, #8bc34a);
             transition: width 0.5s ease;
         }
+
+        /* 状态颜色 */
+        .status-good { background: rgba(46, 125, 50, 0.15); color: #2e7d32; }
+        .dark-theme .status-good { color: #66bb6a; background: rgba(102, 187, 106, 0.2); }
+        
+        .status-warning { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
+        .dark-theme .status-warning { color: #ffa726; background: rgba(255, 167, 38, 0.2); }
+        
+        .status-danger { background: rgba(198, 40, 40, 0.15); color: #c62828; }
+        .dark-theme .status-danger { color: #ef5350; background: rgba(239, 83, 80, 0.2); }
+
+        /* 总览区域 - 紧凑型横排 */
         .summary-card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 12px 20px;
             box-shadow: var(--shadow);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border: var(--border);
             color: var(--text-primary);
-        }
-        .summary-card h2 {
-            font-size: 1.2rem;
-            text-align: center;
-            margin-bottom: 5px;
         }
         .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .summary-metric {
-            text-align: center;
-            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
             background: var(--bg-primary);
-            border-radius: 8px;
-            border: var(--border);
-        }
-        .summary-value {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--text-primary);
-            margin: 5px 0;
-        }
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-        }
-        .error {
-            background: rgba(198, 40, 40, 0.2);
-            color: #c62828;
-            padding: 10px;
             border-radius: 6px;
-            margin: 8px 0;
-            font-size: 0.85rem;
-            border: 1px solid rgba(198, 40, 40, 0.3);
+            border: var(--border);
+            flex: 1;
+            min-width: 140px;
         }
-        .last-update {
-            text-align: center;
-            color: var(--last-update-text);
-            margin-top: 15px;
+        .summary-metric .metric-label {
             font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
         }
+        .summary-metric .summary-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+        .summary-progress-col {
+            flex: 1.5;
+            min-width: 250px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 基础组件和小工具 */
         .theme-toggle {
             position: relative;
-            width: 44px;
-            height: 22px;
+            width: 40px;
+            height: 20px;
             background: var(--btn-bg);
-            border-radius: 11px;
+            border-radius: 10px;
             border: var(--border);
             cursor: pointer;
             transition: background 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
         .theme-toggle::before {
             content: '';
             position: absolute;
-            top: 2px;
+            top: 1px;
             left: 2px;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             background: var(--btn-text);
             border-radius: 50%;
             transition: transform 0.3s ease;
         }
         .dark-theme .theme-toggle::before {
-            transform: translateX(22px);
+            transform: translateX(20px);
         }
         .custom-icon, .account-icon {
-            width: 12px;
-            height: 12px;
-            margin-right: 4px;
+            width: 14px;
+            height: 14px;
+            margin-right: 5px;
             vertical-align: middle;
-            filter: brightness(0.8);
+            filter: brightness(0.7);
             object-fit: contain;
         }
         .dark-theme .custom-icon, .dark-theme .account-icon {
-            filter: brightness(1.2);
+            filter: brightness(1.3);
         }
-        .refresh-progress {
-            margin: 10px 0;
-            text-align: center;
-            color: var(--text-primary);
-        }
-        .progress-text {
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-        }
-        .progress-bar-container {
+        .loading { text-align: center; padding: 20px; color: var(--text-secondary); }
+        .error {
+            background: rgba(198, 40, 40, 0.1);
+            color: #c62828;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 0;
+            font-size: 0.85rem;
+            border: 1px solid rgba(198, 40, 40, 0.2);
             width: 100%;
-            height: 6px;
-            background: var(--bg-primary);
-            border-radius: 3px;
-            overflow: hidden;
         }
-        .progress-bar-inner {
-            height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a);
-            transition: width 0.3s ease;
-        }
+        .dark-theme .error { color: #ff8a80; }
+        .last-update { text-align: center; color: var(--last-update-text); font-size: 0.75rem; margin-top: 10px; }
+        
+        .refresh-progress { margin: 10px 0; text-align: center; color: var(--text-primary); }
+        .progress-text { margin-bottom: 4px; font-size: 0.8rem; }
+        .progress-bar-container { width: 100%; height: 4px; background: var(--bg-primary); border-radius: 2px; overflow: hidden; }
+        .progress-bar-inner { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.3s ease; }
+
+        /* 移动端适配：将行内各项垂直堆叠 */
         @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
+            .list-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 15px;
             }
-            .metric-grid {
-                grid-template-columns: 1fr;
+            .col-name, .col-stat, .col-progress {
+                flex: auto;
             }
+            .col-stat {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background: var(--bg-primary);
+                padding: 8px 12px;
+                border-radius: 6px;
+            }
+            .stat-label { margin-bottom: 0; }
+            .summary-metric { min-width: 45%; }
+            .summary-progress-col { min-width: 100%; margin-top: 8px; }
         }
     </style>
 </head>
@@ -390,13 +404,12 @@ const HTML_PAGE = `
             </button>
             <div class="dropdown">
                 <button class="btn" id="accountDropdownBtn">
-                    查看账号
-                    <span style="margin-left: 0px;"></span>
+                    查看指定账号 ▼
                 </button>
                 <div class="dropdown-content" id="accountDropdown">
                 </div>
             </div>
-            <div class="theme-toggle" id="themeToggle"></div>
+            <div class="theme-toggle" id="themeToggle" title="切换深色/浅色模式"></div>
         </div>
 
         <div id="refreshProgress" class="refresh-progress" style="display: none;">
@@ -408,19 +421,25 @@ const HTML_PAGE = `
         <div id="loading" class="loading">
             <p>正在加载数据...</p>
         </div>
-        <div id="error" class="error" style="display: none;"></div>
+        <div id="error" class="error" style="display: none; margin-bottom: 10px;"></div>
+        
         <div id="summary" class="summary-card" style="display: none;">
-            <h2>总览统计</h2>
             <div class="summary-grid" id="summaryGrid"></div>
         </div>
+        
+        <!-- 一列多行的数据看板 -->
         <div id="dashboard" class="dashboard" style="display: none;"></div>
+        
         <div class="last-update" id="lastUpdate"></div>
     </div>
+    
     <script>
         const WORKER_URL = window.location.origin;
         let ACCOUNTS_DATA =[];
         let dropdownOpen = false;
         let isRefreshing = false;
+        
+        // 主题切换逻辑
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         const savedTheme = localStorage.getItem('theme') || 'light';
@@ -430,6 +449,8 @@ const HTML_PAGE = `
             const isDark = body.classList.contains('dark-theme');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
+        
+        // 下拉菜单逻辑
         const accountDropdownBtn = document.getElementById('accountDropdownBtn');
         const accountDropdown = document.getElementById('accountDropdown');
         accountDropdownBtn.addEventListener('click', (e) => {
@@ -444,6 +465,7 @@ const HTML_PAGE = `
         accountDropdown.addEventListener('click', (e) => {
             e.stopPropagation();
         });
+        
         function updateProgress(percentage, text) {
             const progressBar = document.getElementById('progressBar');
             const progressText = document.getElementById('progressText');
@@ -461,6 +483,7 @@ const HTML_PAGE = `
         function hideRefreshProgress() {
             document.getElementById('refreshProgress').style.display = 'none';
         }
+        
         async function loadData(showAll = true) {
             if (isRefreshing) return;
             isRefreshing = true;
@@ -494,9 +517,23 @@ const HTML_PAGE = `
                 isRefreshing = false;
             }
         }
+        
         function updateAccountDropdown() {
             const accountDropdown = document.getElementById('accountDropdown');
             accountDropdown.innerHTML = '';
+            
+            // 添加一个“查看全部”选项
+            const viewAllLink = document.createElement('a');
+            viewAllLink.href = '#';
+            viewAllLink.innerHTML = '<strong>查看全部账号</strong>';
+            viewAllLink.onclick = (e) => {
+                e.preventDefault();
+                dropdownOpen = false;
+                accountDropdown.classList.remove('show');
+                loadData(true);
+            };
+            accountDropdown.appendChild(viewAllLink);
+
             ACCOUNTS_DATA.forEach((account, index) => {
                 const link = document.createElement('a');
                 link.href = '#';
@@ -510,6 +547,7 @@ const HTML_PAGE = `
                 accountDropdown.appendChild(link);
             });
         }
+        
         async function loadAccount(accountIndex) {
             showLoading();
             hideError();
@@ -526,40 +564,40 @@ const HTML_PAGE = `
                 hideLoading();
             }
         }
+        
         function displayData(data, showAll) {
             const dashboard = document.getElementById('dashboard');
             const summary = document.getElementById('summary');
             const summaryGrid = document.getElementById('summaryGrid');
             dashboard.innerHTML = '';
             summaryGrid.innerHTML = '';
+            
             if (showAll && data.accounts) {
                 summary.style.display = 'block';
+                // 总览部分的紧凑横排设计
                 summaryGrid.innerHTML = \`
                     <div class="summary-metric">
-                        <div class="metric-label">
-                            <img src="${accountIcon}" class="account-icon" />
-                            Account 总数
-                        </div>
+                        <div class="metric-label"><img src="${accountIcon}" class="account-icon" /> 监控总数</div>
                         <div class="summary-value">\${data.accounts.length}</div>
                     </div>
                     <div class="summary-metric">
-                        <div class="metric-label">
-                            <img src="${pageIcon}" class="custom-icon" />
-                            Pages 请求
-                        </div>
+                        <div class="metric-label"><img src="${pageIcon}" class="custom-icon" /> Pages 请求</div>
                         <div class="summary-value">\${data.totals.formatted.pagesSum}</div>
                     </div>
                     <div class="summary-metric">
-                        <div class="metric-label">
-                            <img src="${workerIcon}" class="custom-icon" />
-                            Workers 请求
-                        </div>
+                        <div class="metric-label"><img src="${workerIcon}" class="custom-icon" /> Workers 请求</div>
                         <div class="summary-value">\${data.totals.formatted.workersSum}</div>
                     </div>
-                    <div class="summary-metric">
-                        <div class="metric-label">总剩余额度</div>
-                        <div class="summary-value">\${data.totals.formatted.remaining}</div>
-                        <div class="progress-percent" style="font-size: 0.9rem;">\${data.totals.percent}%</div>
+                    <div class="summary-progress-col">
+                        <div style="width: 100%; background: var(--bg-primary); border: var(--border); padding: 8px 12px; border-radius: 6px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                <span style="font-size: 0.8rem; color: var(--text-secondary);">总剩余: \${data.totals.formatted.remaining}</span>
+                                <span style="font-size: 0.85rem; font-weight: bold;">\${data.totals.percent}%</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 5px;">
+                                <div class="progress-bar-inner" style="width: \${data.totals.percent}%"></div>
+                            </div>
+                        </div>
                     </div>
                 \`;
                 data.accounts.forEach(account => {
@@ -573,9 +611,10 @@ const HTML_PAGE = `
                 summary.style.display = 'none';
                 dashboard.innerHTML = createAccountCard(data);
             }
-            dashboard.style.display = 'grid';
+            dashboard.style.display = 'flex';
             updateLastUpdate();
         }
+        
         function displaySingleAccount(account) {
             const dashboard = document.getElementById('dashboard');
             const summary = document.getElementById('summary');
@@ -586,67 +625,75 @@ const HTML_PAGE = `
             } else {
                 dashboard.innerHTML = createAccountCard(account);
             }
-            dashboard.style.display = 'grid';
+            dashboard.style.display = 'flex';
             updateLastUpdate();
         }
+        
         function createAccountCard(account) {
             const statusClass = getStatusClass(account.percent);
             const statusText = getStatusText(account.percent);
+            // 采用 1列多行的列表布局设计
             return \`
-                <div class="card">
-                    <div class="account-header">
-                        <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
-                        <div class="account-status \${statusClass}">\${statusText}</div>
-                    </div>
-                    <div class="metric-grid">
-                        <div class="metric">
-                            <div class="metric-label">
-                                <img src="${pageIcon}" class="custom-icon" />
-                                Pages 请求
-                            </div>
-                            <div class="metric-value">\${account.formatted.pagesSum}</div>
-                            <div class="metric-label" style="margin-bottom:0">\${account.pagesSum.toLocaleString()} 次</div>
+                <div class="list-row">
+                    <!-- 列1: 账户名称与状态 -->
+                    <div class="row-col col-name">
+                        <div class="account-name-wrapper">
+                            <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
+                            <div class="account-status \${statusClass}">\${statusText}</div>
                         </div>
-                        <div class="metric">
-                            <div class="metric-label">
-                                <img src="${workerIcon}" class="custom-icon" />
-                                Workers 请求
-                            </div>
-                            <div class="metric-value">\${account.formatted.workersSum}</div>
-                            <div class="metric-label" style="margin-bottom:0">\${account.workersSum.toLocaleString()} 次</div>
+                        <div class="col-update">最后更新: \${account.date}</div>
+                    </div>
+                    
+                    <!-- 列2: Pages 请求 -->
+                    <div class="row-col col-stat">
+                        <div class="stat-label">
+                            <img src="${pageIcon}" class="custom-icon" /> Pages
+                        </div>
+                        <div class="stat-value">
+                            \${account.formatted.pagesSum} <span class="stat-raw">(\${account.pagesSum.toLocaleString()})</span>
                         </div>
                     </div>
-                    <div class="progress-section">
+
+                    <!-- 列3: Workers 请求 -->
+                    <div class="row-col col-stat">
+                        <div class="stat-label">
+                            <img src="${workerIcon}" class="custom-icon" /> Workers
+                        </div>
+                        <div class="stat-value">
+                            \${account.formatted.workersSum} <span class="stat-raw">(\${account.workersSum.toLocaleString()})</span>
+                        </div>
+                    </div>
+
+                    <!-- 列4: 进度条与剩余额度 -->
+                    <div class="row-col col-progress">
                         <div class="progress-header">
-                            <div class="progress-label">剩余额度</div>
-                            <div class="progress-percent">\${account.percent}%</div>
+                            <span class="progress-text">\${account.formatted.remaining} / \${account.formatted.total}</span>
+                            <span class="progress-percent">\${account.percent}%</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: \${account.percent}%"></div>
                         </div>
-                        <div style="text-align: center; margin-top: 4px; color: var(--text-secondary); font-size: 0.75rem;">
-                            \${account.formatted.remaining} / \${account.formatted.total}
-                        </div>
-                    </div>
-                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0, 0, 0, 0.1); text-align: center; color: var(--text-secondary); font-size: 0.7rem;">
-                        最后更新: \${account.date}
                     </div>
                 </div>
             \`;
         }
+        
         function createErrorCard(account) {
             return \`
-                <div class="card">
-                    <div class="account-header">
-                        <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
-                        <div class="account-status status-danger">错误</div>
+                <div class="list-row" style="border-left: 4px solid #ef5350;">
+                    <div class="row-col col-name" style="flex: 0 0 250px;">
+                        <div class="account-name-wrapper">
+                            <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
+                            <div class="account-status status-danger">请求失败</div>
+                        </div>
                     </div>
-                    <div class="error">
-                        \${account.error}
+                    <div class="row-col col-progress">
+                        <div class="error">\${account.error}</div>
                     </div>
                 </div>
             \`;
         }
+        
         function getStatusClass(percent) {
             if (percent >= 70) return 'status-good';
             if (percent >= 30) return 'status-warning';
@@ -657,6 +704,7 @@ const HTML_PAGE = `
             if (percent >= 30) return '警告';
             return '不足';
         }
+        
         function showLoading() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
@@ -676,10 +724,12 @@ const HTML_PAGE = `
         function updateLastUpdate() {
             const now = new Date();
             document.getElementById('lastUpdate').textContent = 
-                \`最后更新: \${now.toLocaleString('zh-CN')}\`;
+                \`页面最后刷新时间: \${now.toLocaleString('zh-CN')}\`;
         }
+        
         document.addEventListener('DOMContentLoaded', function() {
             loadData(true);
+            // 每 1 分钟自动静默刷新一次
             setInterval(() => {
                 if (!isRefreshing) {
                     loadData(true);
@@ -933,7 +983,7 @@ async function getSum(email, key, accountId, startDate, endDate) {
 	}
 	const accountData = accounts[0];
 	const pagesGroups =
-		accountData.pagesFunctionsInvocationsAdaptiveGroups || [];
+		accountData.pagesFunctionsInvocationsAdaptiveGroups ||[];
 	const workersData = accountData.workersInvocationsAdaptive ||[];
 	const pagesSum = pagesGroups.reduce(
 		(sum, group) => sum + (group?.sum?.requests || 0),
