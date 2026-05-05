@@ -426,7 +426,7 @@ const HTML_PAGE = `
         <div class="last-update" id="lastUpdate"></div>
     </div>
     <script>
-	const currentUrlParams = new URLSearchParams(window.location.search);
+        const currentUrlParams = new URLSearchParams(window.location.search);
         const userToken = currentUrlParams.get('token');
         const tokenQuery = userToken ? '&token=' + userToken : '';
         
@@ -443,7 +443,7 @@ const HTML_PAGE = `
             );
         }
         const WORKER_URL = window.location.origin;
-        let ACCOUNTS_DATA = [];
+        let ACCOUNTS_DATA =[];
         let dropdownOpen = false;
         let isRefreshing = false;
         const themeToggle = document.getElementById('themeToggle');
@@ -498,7 +498,7 @@ const HTML_PAGE = `
                 showRefreshProgress();
             }
             try {
-                const url = showAll ? `\${WORKER_URL}?all=true&optimized=true\${tokenQuery}` : `\${WORKER_URL}?accountIndex=0\${tokenQuery}`;
+                const url = showAll ? \`\${WORKER_URL}?all=true&optimized=true\${tokenQuery}\` : \`\${WORKER_URL}?accountIndex=0\${tokenQuery}\`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
@@ -525,7 +525,7 @@ const HTML_PAGE = `
             ACCOUNTS_DATA.forEach((account, index) => {
                 const link = document.createElement('a');
                 link.href = '#';
-                link.textContent = \`\${account.accountName}\`;
+                link.textContent = \`\${escapeHTML(account.accountName)}\`;
                 link.onclick = (e) => {
                     e.preventDefault();
                     dropdownOpen = false;
@@ -539,7 +539,7 @@ const HTML_PAGE = `
             showLoading();
             hideError();
             try {
-                const response = await fetch(`\${WORKER_URL}?accountIndex=\${accountIndex}\${tokenQuery}`);
+                const response = await fetch(\`\${WORKER_URL}?accountIndex=\${accountIndex}\${tokenQuery}\`);
                 if (!response.ok) {
                     throw new Error(\`请求失败: \${response.status}\`);
                 }
@@ -663,7 +663,7 @@ const HTML_PAGE = `
             return \`
                 <div class="card">
                     <div class="account-header">
-                        <div class="account-name">\${account.accountName}</div>
+                        <div class="account-name">\${escapeHTML(account.accountName)}</div>
                         <div class="account-status status-danger">错误</div>
                     </div>
                     <div class="error" style="margin: 0;">
@@ -851,7 +851,7 @@ async function getAccountData(account, accountIndex) {
 }
 async function getAllAccountsDataOptimized(accounts) {
 	const CONCURRENT_LIMIT = 6;
-	const results = [];
+	const results =[];
 	const accountPromises = accounts.map((account, index) =>
 		getAccountDataWithRetry(account, index)
 	);
@@ -974,8 +974,8 @@ async function getSum(email, key, accountId, startDate, endDate) {
 	}
 	const accountData = accounts[0];
 	const pagesGroups =
-		accountData.pagesFunctionsInvocationsAdaptiveGroups || [];
-	const workersData = accountData.workersInvocationsAdaptive || [];
+		accountData.pagesFunctionsInvocationsAdaptiveGroups ||[];
+	const workersData = accountData.workersInvocationsAdaptive ||[];
 	const pagesSum = pagesGroups.reduce(
 		(sum, group) => sum + (group?.sum?.requests || 0),
 		0
