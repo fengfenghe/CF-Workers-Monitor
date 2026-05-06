@@ -39,7 +39,11 @@ const HTML_PAGE = `<!DOCTYPE html>
             --header-text: #fff;
             --last-update-text: #888;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f4f7fa;
@@ -49,140 +53,346 @@ const HTML_PAGE = `<!DOCTYPE html>
             transition: background 0.3s ease, color 0.3s ease;
             color: var(--text-primary);
         }
-        body.dark-theme { background: #0d1117; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        body.dark-theme {
+            background: #0d1117;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
         
         /* 登录与全屏加载样式 */
         .login-container {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 30px);
         }
         .login-box {
-            background: var(--card-bg); padding: 40px 30px; border-radius: 12px; box-shadow: var(--shadow); border: var(--border);
-            text-align: center; width: 100%; max-width: 380px;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
         }
         .login-input {
-            width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 1px solid var(--border); border-radius: 6px;
-            background: var(--bg-primary); color: var(--text-primary); outline: none; font-size: 1rem;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 1rem;
             transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
         }
-        .login-input:focus { border-color: #4caf50; box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2); }
+        .login-input:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
 
         /* 顶部 Header 和按钮区 */
-        .header { text-align: center; margin-bottom: 15px; color: var(--header-text); }
-        .header h1 { font-size: 1.4rem; margin-bottom: 4px; }
-        .header p { font-size: 0.85rem; color: var(--text-secondary); }
-        .controls { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; align-items: center; }
-        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--header-text);
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        .header p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
         .btn {
-            padding: 6px 16px; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
-            transition: all 0.2s ease; background: var(--btn-bg); color: var(--btn-text); border: var(--border); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+            padding: 6px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: var(--border);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
-        .btn:hover { background: var(--btn-hover-bg); transform: translateY(-1px); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        
-        .dropdown { position: relative; display: inline-block; }
+        .btn:hover {
+            background: var(--btn-hover-bg);
+            transform: translateY(-1px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
         .dropdown-content {
-            display: none; position: absolute; top: 100%; left: 0; background: var(--card-bg); min-width: 160px;
-            box-shadow: var(--shadow); z-index: 1000; border-radius: 6px; overflow: hidden; margin-top: 4px; border: var(--border);
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--card-bg);
+            min-width: 160px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 4px;
+            border: var(--border);
         }
-        .dropdown-content.show { display: block; }
+        .dropdown-content.show {
+            display: block;
+        }
         .dropdown-content a {
-            color: var(--text-primary); padding: 8px 12px; text-decoration: none; display: block;
-            border-bottom: 1px solid var(--border); font-size: 0.85rem; transition: background 0.2s ease;
+            color: var(--text-primary);
+            padding: 8px 12px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            transition: background 0.2s ease;
         }
-        .dropdown-content a:hover { background: var(--bg-secondary); }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+        }
 
-        /* 结构更新：包含折叠面板的外层包裹器 */
-        .dashboard { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
-        
-        .card-wrapper {
-            background: var(--card-bg); border-radius: 8px; box-shadow: var(--shadow); border: var(--border);
-            transition: transform 0.2s ease, box-shadow 0.2s ease; overflow: hidden;
+        /* 主仪表盘：一列多行布局 */
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .card-wrapper:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); }
 
         .list-row {
-            padding: 12px 20px; color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; gap: 20px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .list-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         /* 内部列定义 */
-        .row-col { display: flex; flex-direction: column; justify-content: center; }
-        .col-name { flex: 0 0 200px; min-width: 0; }
-        .account-name-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-        .account-name { font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .account-status { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; }
-        .col-update { font-size: 0.75rem; color: var(--text-secondary); }
-
-        .col-stat { flex: 0 0 150px; }
-        .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 3px; display: flex; align-items: center; }
-        .stat-value { font-size: 1.05rem; font-weight: bold; }
-        .stat-raw { font-size: 0.75rem; font-weight: normal; color: var(--text-secondary); margin-left: 4px; }
-
-        .col-progress { flex: 1; min-width: 200px; }
-        .progress-header { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; }
-        .progress-text { color: var(--text-secondary); }
-        .progress-percent { font-weight: bold; font-size: 0.85rem; }
-        .progress-bar { height: 6px; background: var(--bg-primary); border-radius: 3px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; }
-
-        /* 折叠面板样式 */
-        .details-panel { padding: 0 20px 12px 20px; border-top: 1px dashed var(--border); }
-        .details-summary {
-            font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; outline: none;
-            padding-top: 10px; user-select: none; font-weight: bold; transition: color 0.2s;
+        .row-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .details-summary:hover { color: #4caf50; }
-        .details-content { display: flex; gap: 20px; margin-top: 10px; }
-        .details-col { flex: 1; background: var(--bg-primary); border-radius: 6px; padding: 10px 15px; min-width: 0; }
-        .details-col h4 {
-            font-size: 0.85rem; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--text-primary);
+        .col-name {
+            flex: 0 0 200px;
+            min-width: 0;
         }
-        .item-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 4px 0; color: var(--text-secondary); border-bottom: 1px solid rgba(0,0,0,0.03); }
-        .dark-theme .item-row { border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .item-row:last-child { border-bottom: none; }
-        .item-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px; }
-        .item-val { font-weight: bold; color: var(--text-primary); white-space: nowrap; }
+        .account-name-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .account-name {
+            font-size: 1rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .account-status {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .col-update {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .col-stat {
+            flex: 0 0 150px;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        .stat-value {
+            font-size: 1.05rem;
+            font-weight: bold;
+        }
+        .stat-raw {
+            font-size: 0.75rem;
+            font-weight: normal;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .col-progress {
+            flex: 1;
+            min-width: 200px;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .progress-text {
+            color: var(--text-secondary);
+        }
+        .progress-percent {
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-primary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            transition: width 0.5s ease;
+        }
 
         /* 状态颜色 */
         .status-good { background: rgba(46, 125, 50, 0.15); color: #2e7d32; }
         .dark-theme .status-good { color: #66bb6a; background: rgba(102, 187, 106, 0.2); }
+        
         .status-warning { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
         .dark-theme .status-warning { color: #ffa726; background: rgba(255, 167, 38, 0.2); }
+        
         .status-danger { background: rgba(198, 40, 40, 0.15); color: #c62828; }
         .dark-theme .status-danger { color: #ef5350; background: rgba(239, 83, 80, 0.2); }
 
         /* 总览区域 - 紧凑型横排 */
         .summary-card {
-            background: var(--card-bg); border-radius: 8px; padding: 12px 20px; box-shadow: var(--shadow);
-            margin-bottom: 15px; border: var(--border); color: var(--text-primary);
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 12px;
+            border: var(--border);
+            color: var(--text-primary);
         }
-        .summary-grid { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .summary-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
         .summary-metric {
-            display: flex; align-items: center; gap: 10px; padding: 6px 12px; background: var(--bg-primary);
-            border-radius: 6px; border: var(--border); flex: 1; min-width: 140px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            border: var(--border);
+            flex: 1;
+            min-width: 140px;
         }
-        .summary-metric .metric-label { font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; }
-        .summary-metric .summary-value { font-size: 1.1rem; font-weight: bold; margin-left: auto; }
+        .summary-metric .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+        }
+        .summary-metric .summary-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
         .summary-progress-col {
-            flex: 1.5; min-width: 250px; background: transparent; border: none; padding: 0; display: flex; flex-direction: column; justify-content: center;
+            flex: 1.5;
+            min-width: 250px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         /* 基础组件和小工具 */
         .theme-toggle {
-            position: relative; width: 40px; height: 20px; background: var(--btn-bg); border-radius: 10px; border: var(--border);
-            cursor: pointer; transition: background 0.3s ease; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: var(--btn-bg);
+            border-radius: 10px;
+            border: var(--border);
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
         .theme-toggle::before {
-            content: ''; position: absolute; top: 1px; left: 2px; width: 16px; height: 16px; background: var(--btn-text);
-            border-radius: 50%; transition: transform 0.3s ease;
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: var(--btn-text);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
         }
-        .dark-theme .theme-toggle::before { transform: translateX(20px); }
-        .custom-icon, .account-icon { width: 14px; height: 14px; margin-right: 5px; vertical-align: middle; filter: brightness(0.7); object-fit: contain; }
-        .dark-theme .custom-icon, .dark-theme .account-icon { filter: brightness(1.3); }
+        .dark-theme .theme-toggle::before {
+            transform: translateX(20px);
+        }
+        .custom-icon, .account-icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 5px;
+            vertical-align: middle;
+            filter: brightness(0.7);
+            object-fit: contain;
+        }
+        .dark-theme .custom-icon, .dark-theme .account-icon {
+            filter: brightness(1.3);
+        }
         .loading { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 1.1rem;}
         .error {
-            background: rgba(198, 40, 40, 0.1); color: #c62828; padding: 8px 12px; border-radius: 6px; margin: 0;
-            font-size: 0.85rem; border: 1px solid rgba(198, 40, 40, 0.2); width: 100%; box-sizing: border-box;
+            background: rgba(198, 40, 40, 0.1);
+            color: #c62828;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 0;
+            font-size: 0.85rem;
+            border: 1px solid rgba(198, 40, 40, 0.2);
+            width: 100%;
+            box-sizing: border-box;
         }
         .dark-theme .error { color: #ff8a80; }
         .last-update { text-align: center; color: var(--last-update-text); font-size: 0.75rem; margin-top: 10px; }
@@ -194,22 +404,38 @@ const HTML_PAGE = `<!DOCTYPE html>
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .list-row { flex-direction: column; align-items: stretch; gap: 12px; padding: 15px; }
-            .col-name, .col-stat, .col-progress { flex: auto; }
-            .col-stat { display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: var(--bg-primary); padding: 8px 12px; border-radius: 6px; }
+            .list-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 15px;
+            }
+            .col-name, .col-stat, .col-progress {
+                flex: auto;
+            }
+            .col-stat {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background: var(--bg-primary);
+                padding: 8px 12px;
+                border-radius: 6px;
+            }
             .stat-label { margin-bottom: 0; }
             .summary-metric { min-width: 45%; }
             .summary-progress-col { min-width: 100%; margin-top: 8px; }
-            .details-content { flex-direction: column; }
         }
     </style>
 </head>
 <body class="light-theme">
 
+    <!-- 初始全屏验证/加载动画 -->
     <div id="globalLoading" class="login-container">
         <div class="loading">正在连接并验证数据...</div>
     </div>
 
+    <!-- 登录验证页 -->
     <div id="loginContainer" class="login-container" style="display: none;">
         <div class="login-box">
             <h2 style="color: var(--header-text); margin-bottom: 5px;">安全登录</h2>
@@ -222,28 +448,42 @@ const HTML_PAGE = `<!DOCTYPE html>
         </div>
     </div>
 
+    <!-- 监控大厅主面板 -->
     <div id="appContainer" class="container" style="display: none;">
         <div class="header">
             <h1>Workers/Pages 用量监控</h1>
-            <p>实时监控 Workers 和 Pages 的请求使用情况及项目分布</p>
+            <p>实时监控 Workers 和 Pages 的请求使用情况</p>
         </div>
         <div class="controls">
-            <button class="btn" id="refreshBtn" onclick="loadData(true)">刷新数据</button>
+            <button class="btn" id="refreshBtn" onclick="loadData(true)">
+                刷新数据
+            </button>
             <div class="dropdown">
-                <button class="btn" id="accountDropdownBtn">查看指定账号 ▼</button>
-                <div class="dropdown-content" id="accountDropdown"></div>
+                <button class="btn" id="accountDropdownBtn">
+                    查看指定账号 ▼
+                </button>
+                <div class="dropdown-content" id="accountDropdown">
+                </div>
             </div>
             <div class="theme-toggle" id="themeToggle" title="切换深色/浅色模式"></div>
         </div>
 
         <div id="refreshProgress" class="refresh-progress" style="display: none;">
             <div class="progress-text">正在刷新数据: <span id="progressText">0%</span></div>
-            <div class="progress-bar-container"><div class="progress-bar-inner" id="progressBar" style="width: 0%"></div></div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-inner" id="progressBar" style="width: 0%"></div>
+            </div>
         </div>
         
         <div id="error" class="error" style="display: none; margin-bottom: 10px;"></div>
-        <div id="summary" class="summary-card" style="display: none;"><div class="summary-grid" id="summaryGrid"></div></div>
+        
+        <div id="summary" class="summary-card" style="display: none;">
+            <div class="summary-grid" id="summaryGrid"></div>
+        </div>
+        
+        <!-- 一列多行的数据看板 -->
         <div id="dashboard" class="dashboard" style="display: none;"></div>
+        
         <div class="last-update" id="lastUpdate"></div>
     </div>
     
@@ -253,17 +493,21 @@ const HTML_PAGE = `<!DOCTYPE html>
         let dropdownOpen = false;
         let isRefreshing = false;
         
+        // 获取本地保存的密码
         let savedPassword = localStorage.getItem('dashboard_password') || '';
         
+        // 主题切换逻辑
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         const savedTheme = localStorage.getItem('theme') || 'light';
         body.classList.toggle('dark-theme', savedTheme === 'dark');
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
-            localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
         
+        // 下拉菜单逻辑
         const accountDropdownBtn = document.getElementById('accountDropdownBtn');
         const accountDropdown = document.getElementById('accountDropdown');
         accountDropdownBtn.addEventListener('click', (e) => {
@@ -271,18 +515,33 @@ const HTML_PAGE = `<!DOCTYPE html>
             dropdownOpen = !dropdownOpen;
             accountDropdown.classList.toggle('show', dropdownOpen);
         });
-        document.addEventListener('click', () => { dropdownOpen = false; accountDropdown.classList.remove('show'); });
-        accountDropdown.addEventListener('click', (e) => { e.stopPropagation(); });
+        document.addEventListener('click', () => {
+            dropdownOpen = false;
+            accountDropdown.classList.remove('show');
+        });
+        accountDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
         
         function updateProgress(percentage, text) {
-            const pb = document.getElementById('progressBar');
-            const pt = document.getElementById('progressText');
-            if (pb) pb.style.width = percentage + '%';
-            if (pt) pt.textContent = text;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            if (progressBar) {
+                progressBar.style.width = percentage + '%';
+            }
+            if (progressText) {
+                progressText.textContent = text;
+            }
         }
-        function showRefreshProgress() { document.getElementById('refreshProgress').style.display = 'block'; updateProgress(0, '开始刷新...'); }
-        function hideRefreshProgress() { document.getElementById('refreshProgress').style.display = 'none'; }
+        function showRefreshProgress() {
+            document.getElementById('refreshProgress').style.display = 'block';
+            updateProgress(0, '开始刷新...');
+        }
+        function hideRefreshProgress() {
+            document.getElementById('refreshProgress').style.display = 'none';
+        }
         
+        // 界面状态切换辅助函数
         function showApp() {
             document.getElementById('globalLoading').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'none';
@@ -293,8 +552,14 @@ const HTML_PAGE = `<!DOCTYPE html>
             document.getElementById('globalLoading').style.display = 'none';
             document.getElementById('appContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'flex';
+            
             const err = document.getElementById('loginError');
-            if (errorMsg) { err.textContent = errorMsg; err.style.display = 'block'; } else { err.style.display = 'none'; }
+            if (errorMsg) {
+                err.textContent = errorMsg;
+                err.style.display = 'block';
+            } else {
+                err.style.display = 'none';
+            }
         }
 
         async function login() {
@@ -303,8 +568,11 @@ const HTML_PAGE = `<!DOCTYPE html>
             savedPassword = pwd;
             localStorage.setItem('dashboard_password', savedPassword);
             document.getElementById('loginError').style.display = 'none';
+            
+            // 切换到全局加载动画
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('globalLoading').style.display = 'flex';
+            
             await loadData(true);
         }
         
@@ -313,28 +581,45 @@ const HTML_PAGE = `<!DOCTYPE html>
             isRefreshing = true;
             
             const refreshBtn = document.getElementById('refreshBtn');
-            if(refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = '刷新中...'; }
-            hideError();
+            if(refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.textContent = '刷新中...';
+            }
             
-            if (showAll && document.getElementById('appContainer').style.display === 'block') showRefreshProgress();
+            hideError();
+            const isAppVisible = document.getElementById('appContainer').style.display === 'block';
+            if (showAll && isAppVisible) {
+                showRefreshProgress();
+            }
 
             try {
                 const url = showAll ? \`\${WORKER_URL}?all=true&optimized=true\` : \`\${WORKER_URL}?accountIndex=0\`;
+                
+                // 添加密码验证 Header
                 const headers = {};
-                if (savedPassword) headers['x-dashboard-password'] = savedPassword;
+                if (savedPassword) {
+                    headers['x-dashboard-password'] = savedPassword;
+                }
 
                 const response = await fetch(url, { headers });
                 
+                // 密码错误或未提供正确密码，弹出登录框
                 if (response.status === 401) {
                     localStorage.removeItem('dashboard_password');
                     savedPassword = '';
                     showLogin(document.getElementById('passwordInput').value ? '密码错误或验证失败，请重试' : '');
                     return;
                 }
-                if (!response.ok) throw new Error(\`请求失败: \${response.status}\`);
+                
+                if (!response.ok) {
+                    throw new Error(\`请求失败: \${response.status}\`);
+                }
                 
                 const data = await response.json();
+                
+                // 验证成功，展现系统主体
                 showApp();
+                
                 ACCOUNTS_DATA = data.accounts || [data];
                 updateAccountDropdown();
                 displayData(data, showAll);
@@ -346,7 +631,10 @@ const HTML_PAGE = `<!DOCTYPE html>
                 }
             } finally {
                 if (showAll) hideRefreshProgress();
-                if(refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = '刷新数据'; }
+                if(refreshBtn) {
+                    refreshBtn.disabled = false;
+                    refreshBtn.textContent = '刷新数据';
+                }
                 isRefreshing = false;
             }
         }
@@ -354,31 +642,54 @@ const HTML_PAGE = `<!DOCTYPE html>
         function updateAccountDropdown() {
             const accountDropdown = document.getElementById('accountDropdown');
             accountDropdown.innerHTML = '';
+            
             const viewAllLink = document.createElement('a');
-            viewAllLink.href = '#'; viewAllLink.innerHTML = '<strong>查看全部账号</strong>';
-            viewAllLink.onclick = (e) => { e.preventDefault(); dropdownOpen = false; accountDropdown.classList.remove('show'); loadData(true); };
+            viewAllLink.href = '#';
+            viewAllLink.innerHTML = '<strong>查看全部账号</strong>';
+            viewAllLink.onclick = (e) => {
+                e.preventDefault();
+                dropdownOpen = false;
+                accountDropdown.classList.remove('show');
+                loadData(true);
+            };
             accountDropdown.appendChild(viewAllLink);
 
             ACCOUNTS_DATA.forEach((account, index) => {
                 const link = document.createElement('a');
-                link.href = '#'; link.textContent = \`\${account.accountName}\`;
-                link.onclick = (e) => { e.preventDefault(); dropdownOpen = false; accountDropdown.classList.remove('show'); loadAccount(index); };
+                link.href = '#';
+                link.textContent = \`\${account.accountName}\`;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    dropdownOpen = false;
+                    accountDropdown.classList.remove('show');
+                    loadAccount(index);
+                };
                 accountDropdown.appendChild(link);
             });
         }
         
         async function loadAccount(accountIndex) {
             hideError();
+            
+            // 使用大厅内部刷新动画
             document.getElementById('dashboard').innerHTML = '<div class="loading">正在加载该账号数据...</div>';
             document.getElementById('summary').style.display = 'none';
 
             try {
                 const headers = {};
-                if (savedPassword) headers['x-dashboard-password'] = savedPassword;
+                if (savedPassword) {
+                    headers['x-dashboard-password'] = savedPassword;
+                }
                 const response = await fetch(\`\${WORKER_URL}?accountIndex=\${accountIndex}\`, { headers });
                 
-                if (response.status === 401) { showLogin('会话已过期，请重新验证密码'); return; }
-                if (!response.ok) throw new Error(\`请求失败: \${response.status}\`);
+                if (response.status === 401) {
+                    showLogin('会话已过期，请重新验证密码');
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(\`请求失败: \${response.status}\`);
+                }
                 const data = await response.json();
                 displaySingleAccount(data);
             } catch (error) {
@@ -391,22 +702,42 @@ const HTML_PAGE = `<!DOCTYPE html>
             const dashboard = document.getElementById('dashboard');
             const summary = document.getElementById('summary');
             const summaryGrid = document.getElementById('summaryGrid');
-            dashboard.innerHTML = ''; summaryGrid.innerHTML = '';
+            dashboard.innerHTML = '';
+            summaryGrid.innerHTML = '';
             
             if (showAll && data.accounts) {
                 summary.style.display = 'block';
                 summaryGrid.innerHTML = \`
-                    <div class="summary-metric"><div class="metric-label"><img src="${accountIcon}" class="account-icon" /> 监控总数</div><div class="summary-value">\${data.accounts.length}</div></div>
-                    <div class="summary-metric"><div class="metric-label"><img src="${pageIcon}" class="custom-icon" /> Pages 请求</div><div class="summary-value">\${data.totals.formatted.pagesSum}</div></div>
-                    <div class="summary-metric"><div class="metric-label"><img src="${workerIcon}" class="custom-icon" /> Workers 请求</div><div class="summary-value">\${data.totals.formatted.workersSum}</div></div>
+                    <div class="summary-metric">
+                        <div class="metric-label"><img src="${accountIcon}" class="account-icon" /> 监控总数</div>
+                        <div class="summary-value">\${data.accounts.length}</div>
+                    </div>
+                    <div class="summary-metric">
+                        <div class="metric-label"><img src="${pageIcon}" class="custom-icon" /> Pages 请求</div>
+                        <div class="summary-value">\${data.totals.formatted.pagesSum}</div>
+                    </div>
+                    <div class="summary-metric">
+                        <div class="metric-label"><img src="${workerIcon}" class="custom-icon" /> Workers 请求</div>
+                        <div class="summary-value">\${data.totals.formatted.workersSum}</div>
+                    </div>
                     <div class="summary-progress-col">
                         <div style="width: 100%; background: var(--bg-primary); border: var(--border); padding: 8px 12px; border-radius: 6px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="font-size: 0.8rem; color: var(--text-secondary);">总剩余: \${data.totals.formatted.remaining}</span><span style="font-size: 0.85rem; font-weight: bold;">\${data.totals.percent}%</span></div>
-                            <div class="progress-bar-container" style="height: 5px;"><div class="progress-bar-inner" style="width: \${data.totals.percent}%"></div></div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                <span style="font-size: 0.8rem; color: var(--text-secondary);">总剩余: \${data.totals.formatted.remaining}</span>
+                                <span style="font-size: 0.85rem; font-weight: bold;">\${data.totals.percent}%</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 5px;">
+                                <div class="progress-bar-inner" style="width: \${data.totals.percent}%"></div>
+                            </div>
                         </div>
-                    </div>\`;
+                    </div>
+                \`;
                 data.accounts.forEach(account => {
-                    dashboard.innerHTML += account.error ? createErrorCard(account) : createAccountCard(account);
+                    if (account.error) {
+                        dashboard.innerHTML += createErrorCard(account);
+                    } else {
+                        dashboard.innerHTML += createAccountCard(account);
+                    }
                 });
             } else {
                 summary.style.display = 'none';
@@ -419,8 +750,13 @@ const HTML_PAGE = `<!DOCTYPE html>
         function displaySingleAccount(account) {
             const dashboard = document.getElementById('dashboard');
             const summary = document.getElementById('summary');
-            summary.style.display = 'none'; dashboard.innerHTML = '';
-            dashboard.innerHTML = account.error ? createErrorCard(account) : createAccountCard(account);
+            summary.style.display = 'none';
+            dashboard.innerHTML = '';
+            if (account.error) {
+                dashboard.innerHTML = createErrorCard(account);
+            } else {
+                dashboard.innerHTML = createAccountCard(account);
+            }
             dashboard.style.display = 'flex';
             updateLastUpdate();
         }
@@ -428,87 +764,96 @@ const HTML_PAGE = `<!DOCTYPE html>
         function createAccountCard(account) {
             const statusClass = getStatusClass(account.percent);
             const statusText = getStatusText(account.percent);
-            
-            // 渲染折叠详情面板
-            let detailsHtml = '';
-            const hasPages = account.pagesDetails && account.pagesDetails.length > 0;
-            const hasWorkers = account.workersDetails && account.workersDetails.length > 0;
-            
-            if (hasPages || hasWorkers) {
-                const renderList = (title, list) => {
-                    if (!list || list.length === 0) return '';
-                    const items = list.map(item => \`<div class="item-row"><span class="item-name" title="\${item.name}">\${item.name}</span><span class="item-val">\${item.requests.toLocaleString()}</span></div>\`).join('');
-                    return \`<div class="details-col"><h4>\${title}</h4><div class="items-container">\${items}</div></div>\`;
-                };
-                detailsHtml = \`
-                    <details class="details-panel">
-                        <summary class="details-summary">▶ 查看分布详情 (展开)</summary>
-                        <div class="details-content">
-                            \${renderList('Workers 排行', account.workersDetails)}
-                            \${renderList('Pages 排行', account.pagesDetails)}
-                        </div>
-                    </details>
-                \`;
-            }
-
             return \`
-                <div class="card-wrapper">
-                    <div class="list-row">
-                        <div class="row-col col-name">
-                            <div class="account-name-wrapper">
-                                <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
-                                <div class="account-status \${statusClass}">\${statusText}</div>
-                            </div>
-                            <div class="col-update">最后更新: \${account.date}</div>
+                <div class="list-row">
+                    <!-- 列1: 账户名称与状态 -->
+                    <div class="row-col col-name">
+                        <div class="account-name-wrapper">
+                            <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
+                            <div class="account-status \${statusClass}">\${statusText}</div>
                         </div>
-                        <div class="row-col col-stat">
-                            <div class="stat-label"><img src="${pageIcon}" class="custom-icon" /> Pages</div>
-                            <div class="stat-value">\${account.formatted.pagesSum} <span class="stat-raw">(\${account.pagesSum.toLocaleString()})</span></div>
+                        <div class="col-update">最后更新: \${account.date}</div>
+                    </div>
+                    
+                    <!-- 列2: Pages 请求 -->
+                    <div class="row-col col-stat">
+                        <div class="stat-label">
+                            <img src="${pageIcon}" class="custom-icon" /> Pages
                         </div>
-                        <div class="row-col col-stat">
-                            <div class="stat-label"><img src="${workerIcon}" class="custom-icon" /> Workers</div>
-                            <div class="stat-value">\${account.formatted.workersSum} <span class="stat-raw">(\${account.workersSum.toLocaleString()})</span></div>
-                        </div>
-                        <div class="row-col col-progress">
-                            <div class="progress-header">
-                                <span class="progress-text">\${account.formatted.remaining} / \${account.formatted.total}</span>
-                                <span class="progress-percent">\${account.percent}%</span>
-                            </div>
-                            <div class="progress-bar"><div class="progress-fill" style="width: \${account.percent}%"></div></div>
+                        <div class="stat-value">
+                            \${account.formatted.pagesSum} <span class="stat-raw">(\${account.pagesSum.toLocaleString()})</span>
                         </div>
                     </div>
-                    \${detailsHtml}
+
+                    <!-- 列3: Workers 请求 -->
+                    <div class="row-col col-stat">
+                        <div class="stat-label">
+                            <img src="${workerIcon}" class="custom-icon" /> Workers
+                        </div>
+                        <div class="stat-value">
+                            \${account.formatted.workersSum} <span class="stat-raw">(\${account.workersSum.toLocaleString()})</span>
+                        </div>
+                    </div>
+
+                    <!-- 列4: 进度条与剩余额度 -->
+                    <div class="row-col col-progress">
+                        <div class="progress-header">
+                            <span class="progress-text">\${account.formatted.remaining} / \${account.formatted.total}</span>
+                            <span class="progress-percent">\${account.percent}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: \${account.percent}%"></div>
+                        </div>
+                    </div>
                 </div>
             \`;
         }
         
         function createErrorCard(account) {
             return \`
-                <div class="card-wrapper" style="border-left: 4px solid #ef5350;">
-                    <div class="list-row">
-                        <div class="row-col col-name" style="flex: 0 0 250px;">
-                            <div class="account-name-wrapper">
-                                <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
-                                <div class="account-status status-danger">请求失败</div>
-                            </div>
+                <div class="list-row" style="border-left: 4px solid #ef5350;">
+                    <div class="row-col col-name" style="flex: 0 0 250px;">
+                        <div class="account-name-wrapper">
+                            <div class="account-name" title="\${account.accountName}">\${account.accountName}</div>
+                            <div class="account-status status-danger">请求失败</div>
                         </div>
-                        <div class="row-col col-progress">
-                            <div class="error">\${account.error}</div>
-                        </div>
+                    </div>
+                    <div class="row-col col-progress">
+                        <div class="error">\${account.error}</div>
                     </div>
                 </div>
             \`;
         }
         
-        function getStatusClass(percent) { if (percent >= 70) return 'status-good'; if (percent >= 30) return 'status-warning'; return 'status-danger'; }
-        function getStatusText(percent) { if (percent >= 70) return '充足'; if (percent >= 30) return '警告'; return '不足'; }
-        function showError(message) { const el = document.getElementById('error'); el.textContent = message; el.style.display = 'block'; }
-        function hideError() { document.getElementById('error').style.display = 'none'; }
-        function updateLastUpdate() { document.getElementById('lastUpdate').textContent = \`页面最后刷新时间: \${new Date().toLocaleString('zh-CN')}\`; }
+        function getStatusClass(percent) {
+            if (percent >= 70) return 'status-good';
+            if (percent >= 30) return 'status-warning';
+            return 'status-danger';
+        }
+        function getStatusText(percent) {
+            if (percent >= 70) return '充足';
+            if (percent >= 30) return '警告';
+            return '不足';
+        }
+        
+        function showError(message) {
+            const errorEl = document.getElementById('error');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+        function updateLastUpdate() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                \`页面最后刷新时间: \${now.toLocaleString('zh-CN')}\`;
+        }
         
         document.addEventListener('DOMContentLoaded', function() {
             loadData(true);
             setInterval(() => {
+                // 如果在 App 主界面且没有在刷新中，则自动后台刷新
                 if (!isRefreshing && document.getElementById('appContainer').style.display === 'block') {
                     loadData(true);
                 }
@@ -518,6 +863,7 @@ const HTML_PAGE = `<!DOCTYPE html>
 </body>
 </html>`;
 
+// CORS允许自定义密码Header通过
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "*",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -541,19 +887,28 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3, delay = 1000) {
 			return response;
 		} catch (error) {
 			if (i === maxRetries - 1) throw error;
-			await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
+			await new Promise((resolve) =>
+				setTimeout(resolve, delay * (i + 1))
+			);
 		}
 	}
 }
 
 async function handleRequest(request, env) {
 	const url = new URL(request.url);
+    
+    // 放行OPTIONS预检请求
 	if (request.method === "OPTIONS") {
 		return new Response(null, { headers: corsHeaders });
 	}
+    
+    // 如果带有参数则代表调用数据接口，进入 API 逻辑（含密码校验）
 	if (url.searchParams.toString() !== "") {
 		return handleAPIRequest(request, env);
 	}
+    
+    // 未带参数直接请求，下发纯静态 HTML 外壳框架
+    // 注：页面逻辑会自动发带参数的请求获取数据，此时才会进行真正的密码拦截和弹窗
 	return new Response(HTML_PAGE, {
 		headers: {
 			"Content-Type": "text/html; charset=utf-8",
@@ -564,12 +919,11 @@ async function handleRequest(request, env) {
 
 async function handleAPIRequest(request, env) {
 	try {
-        // --- 核心更新：安全验证机制 ---
-        // 支持优先读取 env.ADMIN 变量，兼容 env.PASSWORD 变量
-        const serverSecret = env.ADMIN || env.PASSWORD;
-        if (serverSecret) {
+        // --- 核心：安全验证机制 ---
+        // 验证前端传过来的 Header 密码，如果不通过则直接返回 401 Unauthorized
+        if (env.PASSWORD) {
             const pwd = request.headers.get("x-dashboard-password");
-            if (pwd !== serverSecret) {
+            if (pwd !== env.PASSWORD) {
                 return jsonResponse({ error: "Unauthorized" }, 401);
             }
         }
@@ -579,6 +933,7 @@ async function handleAPIRequest(request, env) {
 		const isOptimized = url.searchParams.get("optimized") === "true";
 		const now = Date.now();
         
+        // 返回缓存的数据
 		if (isOptimized && cache.data && now - cache.lastUpdated < cache.ttl) {
 			return jsonResponse(cache.data);
 		}
@@ -626,26 +981,20 @@ async function getAccountData(account, accountIndex) {
 	now.setUTCHours(0, 0, 0, 0);
 	const startDate = now.toISOString();
 	const endDate = new Date().toISOString();
-	
-    // 解析返回的具体分布数据
-    const { pagesSum, workersSum, pagesDetails, workersDetails } = await getSum(
+	const { pagesSum = 0, workersSum = 0 } = await getSum(
 		email,
 		key,
 		accountId,
 		startDate,
 		endDate
 	);
-	
-    const remaining = total - pagesSum - workersSum;
+	const remaining = total - pagesSum - workersSum;
 	const percent = (remaining / total) * 100;
-    
 	return {
 		accountIndex,
 		accountName: account.name || `Account ${accountIndex}`,
 		pagesSum,
 		workersSum,
-        pagesDetails,
-        workersDetails,
 		total,
 		remaining,
 		percent: Math.round(percent),
@@ -675,12 +1024,12 @@ async function getAllAccountsDataOptimized(accounts) {
 			} else {
 				results.push({
 					accountIndex,
-					accountName: accounts[accountIndex]?.name || `Account ${accountIndex}`,
+					accountName:
+						accounts[accountIndex]?.name ||
+						`Account ${accountIndex}`,
 					error: result.reason.message,
 					pagesSum: 0,
 					workersSum: 0,
-                    pagesDetails: [],
-                    workersDetails: [],
 					total: accounts[accountIndex]?.total || 100000,
 					remaining: 0,
 					percent: 0,
@@ -704,7 +1053,8 @@ async function getAllAccountsDataOptimized(accounts) {
 		{ pagesSum: 0, workersSum: 0, total: 0, remaining: 0 }
 	);
 
-	const overallPercent = totals.total > 0 ? (totals.remaining / totals.total) * 100 : 0;
+	const overallPercent =
+		totals.total > 0 ? (totals.remaining / totals.total) * 100 : 0;
 	return {
 		accounts: results,
 		totals: {
@@ -735,23 +1085,16 @@ async function getAccountDataWithRetry(account, accountIndex, maxRetries = 2) {
 }
 
 async function getSum(email, key, accountId, startDate, endDate) {
-	// 使用 Groups 进行分类查询，抓取具体名称 (dimensions)
-    const query = {
+	const query = {
 		query: `query getBillingMetrics($accountId: string!, $filter: AccountWorkersInvocationsAdaptiveFilter_InputObject) {
       viewer {
         accounts(filter: {accountTag: $accountId}) {
-          pagesFunctionsInvocationsAdaptiveGroups(limit: 10000, filter: $filter) {
-            dimensions {
-              projectName
-            }
+          pagesFunctionsInvocationsAdaptiveGroups(limit: 1000, filter: $filter) {
             sum {
               requests
             }
           }
-          workersInvocationsAdaptiveGroups(limit: 10000, filter: $filter) {
-            dimensions {
-              scriptName
-            }
+          workersInvocationsAdaptive(limit: 10000, filter: $filter) {
             sum {
               requests
             }
@@ -791,26 +1134,18 @@ async function getSum(email, key, accountId, startDate, endDate) {
 		throw new Error("未找到账户数据");
 	}
 	const accountData = accounts[0];
-	const pagesGroups = accountData.pagesFunctionsInvocationsAdaptiveGroups ||[];
-	const workersGroups = accountData.workersInvocationsAdaptiveGroups ||[];
-	
-    // 整理并排序 Pages 的详情 (从高到低排序，过滤掉0请求的项目)
-    const pagesDetails = pagesGroups.map(g => ({
-        name: g.dimensions?.projectName || '未知项目',
-        requests: g.sum?.requests || 0
-    })).filter(i => i.requests > 0).sort((a, b) => b.requests - a.requests);
-
-    // 整理并排序 Workers 的详情 (从高到低排序，过滤掉0请求的项目)
-    const workersDetails = workersGroups.map(g => ({
-        name: g.dimensions?.scriptName || '未知脚本',
-        requests: g.sum?.requests || 0
-    })).filter(i => i.requests > 0).sort((a, b) => b.requests - a.requests);
-
-    // 计算总数
-    const pagesSum = pagesDetails.reduce((sum, item) => sum + item.requests, 0);
-	const workersSum = workersDetails.reduce((sum, item) => sum + item.requests, 0);
-	
-    return { pagesSum, workersSum, pagesDetails, workersDetails };
+	const pagesGroups =
+		accountData.pagesFunctionsInvocationsAdaptiveGroups ||[];
+	const workersData = accountData.workersInvocationsAdaptive ||[];
+	const pagesSum = pagesGroups.reduce(
+		(sum, group) => sum + (group?.sum?.requests || 0),
+		0
+	);
+	const workersSum = workersData.reduce(
+		(sum, item) => sum + (item?.sum?.requests || 0),
+		0
+	);
+	return { pagesSum, workersSum };
 }
 
 function formatNumber(num) {
