@@ -564,12 +564,16 @@ async function handleRequest(request, env) {
 
 async function handleAPIRequest(request, env) {
 	try {
-        if (env.PASSWORD) {
+        // --- 核心更新：安全验证机制 ---
+        // 支持优先读取 env.ADMIN 变量，兼容 env.PASSWORD 变量
+        const serverSecret = env.ADMIN || env.PASSWORD;
+        if (serverSecret) {
             const pwd = request.headers.get("x-dashboard-password");
-            if (pwd !== env.PASSWORD) {
+            if (pwd !== serverSecret) {
                 return jsonResponse({ error: "Unauthorized" }, 401);
             }
         }
+        // -------------------------
 
 		const url = new URL(request.url);
 		const isOptimized = url.searchParams.get("optimized") === "true";
